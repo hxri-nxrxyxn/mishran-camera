@@ -16,13 +16,38 @@
             return;
         }
     }
-    isConnecting= true;
-    status='Initializing Camera...';
-    try{
-        camera = await navigator.mediaDevices.getUserMedia({video:true, audio:true});
+    isConnecting = true;
+    status = "Initializing Camera...";
+    try {
+        camera = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+        });
         //asks browser for camera and microphone access
-    console.log("Inspecting tracks in the media stream");
-    camera.getTracks().forEach(track => console.log(`Found track: kind=${track.kind},label=$track.label`))//logs each track
+        console.log("Inspecting tracks in the media stream");
+        camera
+            .getTracks()
+            .forEach((track) =>
+                console.log(
+                    `Found track: kind=${track.kind},label=$track.label`,
+                ),
+            ); //logs each track
+        videoelement.srcObject = camera; //sets the video element to show the camera stream live
+    } catch (err) {
+        //if user denies permission or there is no camera catch runs , logs error and updates status,resets isConnecting and exits connect()
+        console.error("getUserMedia error:", err);
+        status = "Error: Could not access camera.Please grant permission";
+        isConnecting = false;
+        return;
+    }
+    videoElement.onloadedmetadata = () => {
+        const clientId = "client_" + Math.floor(Math.random() * 10000); //Random Client ID generated
+        const wsUrl = `ws://${serverAddress}/${clientId}`; //Builds a web socket URL
+        socket = new WebSocket(wsUrl); //Creates a new WebSocket connection to server
+        socket.onopen = () => {
+            //when connection opens update status
+            status = "Connected";
+            isConnecting = false;
+        };
     };
-
 </script>
