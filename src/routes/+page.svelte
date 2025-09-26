@@ -98,7 +98,12 @@
         }
     }
     onDestroy(() => {
-       
+       if(camera){
+        camera.getTracks,forEach(track => TextTrack.stop());
+       }
+       if(socket){
+        socket.close();
+       }
     });
 
 </script>
