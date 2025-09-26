@@ -16,4 +16,13 @@
             return;
         }
     }
+    isConnecting= true;
+    status='Initializing Camera...';
+    try{
+        camera = await navigator.mediaDevices.getUserMedia({video:true, audio:true});
+        //asks browser for camera and microphone access
+    console.log("Inspecting tracks in the media stream");
+    camera.getTracks().forEach(track => console.log(`Found track: kind=${track.kind},label=$track.label`))//logs each track
+    };
+
 </script>
