@@ -59,5 +59,38 @@
             stopRecording();
         }
     };
+    socket.onclose = () => {//runs when socket closes
+        status = 'Connection Failed.';
+        isConnecting = false;
+    };
+       socket.onerror = (err) => {//runs on websocket error
+        console.error('WebSocket error:', err);
+        status = 'Connection Failed.';
+        isConnecting = false;
+    };
+    function startRecording() {
+       if(recorder && recorder.state === 'recording'){//if already recording do nothing
+        return;
+       }
+       status='Recording...';
+       if(!camera) return;//if camera is missing for some reason,exit
+       recorder = new MediaRecorder(camera,{mimeType:'video/webm'});//create a new MediaRecorder that records from camera mediastream
+       recorder.ondataavailable = (event) => {//fires when a chunk of recorded data is ready
+        if(event.data && event.data.size > 0 ){
+            socket.send(event.data);//sends the recorded blob to server via websocket
+        }
+    };
+        recorder.onstart=() => {//logs when recording starts
+        console.log('MediaRecorder has started');
+        }
+        recorder.onstop = () => {//logs when recording stops
+            console.log('MediaRecorder has stopped.Notifying server');
+            status='Connected';//update the UI status
+            if(socket && socket.readyState === WebSocket.OPEN){
+                socket.send(JSON.stringify({type:'recording_fully_stopped'}));//if socket is open,notify server that recording has stopped
+            }
+        }
+        recorder.start(1000);//starts recording and asks the recorder to deliver ondataavailable events every 1000 millisecond
+    }
 
 </script>
