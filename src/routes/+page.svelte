@@ -60,7 +60,7 @@
         }
     };
     socket.onclose = () => {//runs when socket closes
-        status = 'Connection Failed.';
+        status = 'Disconnected.Ready to connect';
         isConnecting = false;
     };
        socket.onerror = (err) => {//runs on websocket error
