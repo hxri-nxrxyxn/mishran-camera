@@ -92,5 +92,13 @@
         }
         recorder.start(1000);//starts recording and asks the recorder to deliver ondataavailable events every 1000 millisecond
     }
+    function stopRecording(){
+        if(recorder && recorder.state === 'recording'){//if recorder exists and is recording
+            recorder.stop();//stop the recording
+        }
+    }
+    onDestroy(() => {
+       
+    });
 
 </script>
