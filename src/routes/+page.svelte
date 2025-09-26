@@ -8,4 +8,12 @@
     let status = "Ready to connect";
     let isConnecting = false;
     //ipAddress, status and isConnecting are UI state variables
+
+    async function connect() {
+        const serverAddress = ipAddress.trim();
+        if (!serverAddress) {
+            alert("Please enter server IP address and port");
+            return;
+        }
+    }
 </script>
