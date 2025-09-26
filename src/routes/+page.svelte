@@ -50,4 +50,14 @@
             isConnecting = false;
         };
     };
+    socket.onmessage = (event) => {
+        const message =JSON.parse(event data);//parses incoming message
+        if (message.command === 'start_recording') { //if command is start_recording call startRecording function
+            startRecording();
+        }
+        if(message.command === 'stop_recording'){//if command is stop_recording call stopRecording function
+            stopRecording();
+        }
+    };
+
 </script>
