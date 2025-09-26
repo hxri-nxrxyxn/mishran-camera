@@ -1,6 +1,7 @@
 <script>
     import Addr from "./addr.svelte";
 	import CompactDisk from './cd.svelte';
+    import Camera from "./camera.svelte";
     // import { onMount, onDestroy } from "svelte"; //onDestroy is useed to release the camera and close the websocket when the component is closed
     // let camera = null; //camera will hold the media stream
     // let socket = null; //socket will hold the websocket connection to your server
@@ -112,7 +113,8 @@
 
 <main>
     <CompactDisk/>
-<Addr/>
+    <Addr/>
+    <Camera/>
 </main>
 
 <style>
